@@ -16,8 +16,8 @@ class TicketController extends Controller
         $user = auth()->user();
 
         $tickets = $user->isAgent()
-            ? Ticket::with('user')->latest()->paginate(15)
-            : $user->tickets()->latest()->paginate(15);
+            ? Ticket::with(['user', 'lastReplyBy'])->recent()->paginate(15)
+            : $user->tickets()->recent()->paginate(15);
 
         return view('tickets.index', compact('tickets'));
     }
@@ -34,21 +34,38 @@ class TicketController extends Controller
         $validated = $request->validate([
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
+            'priority' => 'nullable|string|in:low,medium,high',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         $ticket = Ticket::create([
             'user_id' => auth()->id(),
             'subject' => $validated['subject'],
+            'priority' => $validated['priority'] ?? 'medium',
+            'last_reply_at' => now(),
+            'last_reply_by' => auth()->id(),
         ]);
 
-        TicketReply::create([
+        $reply = TicketReply::create([
             'ticket_id' => $ticket->id,
             'user_id' => auth()->id(),
             'message' => $validated['message'],
         ]);
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('tickets', 'public');
+                $reply->attachments()->create([
+                    'file_path' => $path,
+                    'original_name' => $file->getClientOriginalName(),
+                    'mime_type' => $file->getClientMimeType(),
+                    'file_size' => $file->getSize(),
+                ]);
+            }
+        }
+
         return redirect()->route('tickets.show', $ticket)
-            ->with('success', 'Biletiniz oluşturuldu!');
+            ->with('success', 'Destek Ticket\'ınız oluşturuldu!');
     }
 
     /** Bilet detayı + yanıtlar. */
@@ -56,7 +73,7 @@ class TicketController extends Controller
     {
         $this->authorizeTicketAccess($ticket);
 
-        $ticket->load('replies.user');
+        $ticket->load('replies.user', 'replies.attachments');
 
         return view('tickets.show', compact('ticket'));
     }
@@ -66,20 +83,42 @@ class TicketController extends Controller
     {
         $this->authorizeTicketAccess($ticket);
 
-        $request->validate(['message' => 'required|string']);
+        $request->validate([
+            'message' => 'required|string',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
 
-        TicketReply::create([
+        $reply = TicketReply::create([
             'ticket_id' => $ticket->id,
             'user_id' => auth()->id(),
             'message' => $request->message,
         ]);
 
-        // Agent yanıt attıysa durumu "pending" olarak işaretle
-        if (auth()->user()->isAgent()) {
-            $ticket->update(['status' => 'pending']);
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('tickets', 'public');
+                $reply->attachments()->create([
+                    'file_path' => $path,
+                    'original_name' => $file->getClientOriginalName(),
+                    'mime_type' => $file->getClientMimeType(),
+                    'file_size' => $file->getSize(),
+                ]);
+            }
         }
 
+        // Model boot event handles status and last_reply update.
+
         return back()->with('success', 'Yanıtınız eklendi.');
+    }
+
+    /** Bileti kapatma */
+    public function close(Ticket $ticket)
+    {
+        $this->authorizeTicketAccess($ticket);
+
+        $ticket->update(['status' => 'closed']);
+
+        return back()->with('success', 'Destek Ticket\'ı kapatıldı.');
     }
 
     /** Bilete erişim kontrolü (sadece sahibi veya agent/admin). */

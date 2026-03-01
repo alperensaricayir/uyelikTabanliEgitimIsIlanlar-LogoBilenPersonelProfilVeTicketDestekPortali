@@ -23,7 +23,7 @@ class DashboardController extends Controller
             ->count();
 
         $openTicketsCount = Ticket::where('user_id', $user->id)
-            ->whereIn('status', ['OPEN', 'IN_PROGRESS'])
+            ->openStatus()
             ->count();
 
         $newNotificationsCount = Notification::where('user_id', $user->id)
@@ -41,8 +41,8 @@ class DashboardController extends Controller
             ->get();
 
         $openTickets = Ticket::where('user_id', $user->id)
-            ->whereIn('status', ['OPEN', 'IN_PROGRESS'])
-            ->orderBy('updated_at', 'desc')
+            ->openStatus()
+            ->recent()
             ->limit(5)
             ->get();
 

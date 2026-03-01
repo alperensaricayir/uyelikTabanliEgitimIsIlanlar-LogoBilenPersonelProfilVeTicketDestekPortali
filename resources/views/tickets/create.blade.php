@@ -1,41 +1,65 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Yeni Destek Bileti</h2>
+        <h2 class="font-semibold text-xl text-neutral-900 leading-tight">Yeni Destek Ticket'ı Oluştur</h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 bg-neutral-50 min-h-screen">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow rounded-lg p-8">
-                <form method="POST" action="{{ route('tickets.store') }}">
+            <div class="bg-white border border-neutral-200 shadow-sm rounded-2xl p-6 sm:p-8">
+                <form method="POST" action="{{ route('tickets.store') }}" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Konu</label>
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-neutral-900 mb-1.5">Konu</label>
                         <input type="text" name="subject" value="{{ old('subject') }}" required
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Sorunuzu kısaca yazın">
+                            class="w-full border-neutral-300 rounded-xl shadow-sm focus:ring-violet-500 focus:border-violet-500 text-sm"
+                            placeholder="Örn: Eğitime erişemiyorum">
                         @error('subject')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Mesajınız</label>
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-neutral-900 mb-1.5">Öncelik (İsteğe
+                            Bağlı)</label>
+                        <select name="priority"
+                            class="w-full border-neutral-300 rounded-xl shadow-sm focus:ring-violet-500 focus:border-violet-500 text-sm">
+                            <option value="medium">Normal</option>
+                            <option value="low">Düşük</option>
+                            <option value="high">Yüksek</option>
+                        </select>
+                        @error('priority')
+                            <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-neutral-900 mb-1.5">Mesajınız</label>
                         <textarea name="message" rows="6" required
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Sorununuzu detaylı açıklayın...">{{ old('message') }}</textarea>
+                            class="w-full border-neutral-300 rounded-xl shadow-sm focus:ring-violet-500 focus:border-violet-500 text-sm"
+                            placeholder="Sorununuzu detaylı bir şekilde açıklayın...">{{ old('message') }}</textarea>
                         @error('message')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="flex gap-3">
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-neutral-900 mb-1.5">Ekler (İsteğe Bağlı, Görsel,
+                            Max: 5MB)</label>
+                        <input type="file" name="images[]" multiple accept="image/jpeg,image/png,image/webp,image/jpg"
+                            class="block w-full text-sm text-neutral-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 transition-colors cursor-pointer border border-neutral-200 rounded-xl">
+                        @error('images.*')
+                            <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="flex items-center gap-3">
                         <button type="submit"
-                            class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">
-                            Bileti Gönder
+                            class="bg-violet-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-violet-700 focus:ring-4 focus:ring-violet-100 transition-all">
+                            Gönder
                         </button>
                         <a href="{{ route('tickets.index') }}"
-                            class="px-6 py-2 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 transition">
+                            class="px-6 py-2.5 rounded-xl border border-neutral-200 text-neutral-700 text-sm font-semibold hover:bg-neutral-50 transition-colors">
                             İptal
                         </a>
                     </div>

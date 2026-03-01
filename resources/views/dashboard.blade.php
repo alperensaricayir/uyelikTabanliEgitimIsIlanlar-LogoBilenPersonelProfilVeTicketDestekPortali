@@ -68,8 +68,8 @@
                     </div>
                     <div class="min-w-0">
                         <p class="text-2xl font-bold text-neutral-900">{{ $openTicketsCount }}</p>
-                        <p class="text-xs font-medium text-neutral-500 leading-tight mt-0.5">Açık Bilet<br><span
-                                class="text-neutral-400 font-normal">Yanıt bekleyen</span></p>
+                        <p class="text-xs font-medium text-neutral-500 leading-tight mt-0.5">Açık Destek
+                            Ticket'ı<br><span class="text-neutral-400 font-normal">Yanıt bekleyen</span></p>
                     </div>
                 </a>
 
@@ -163,12 +163,17 @@
                                     {{-- Calendar mini widget --}}
                                     <div
                                         class="flex-shrink-0 w-11 h-11 rounded-xl bg-violet-50 border border-violet-100 flex flex-col items-center justify-center text-violet-700">
-                                        <span class="text-[9px] font-bold uppercase leading-none">
-                                            {{ $training->starts_at->format('M') }}
-                                        </span>
-                                        <span class="text-base font-bold leading-none mt-0.5">
-                                            {{ $training->starts_at->format('d') }}
-                                        </span>
+                                        @if($training->published_at)
+                                            <span class="text-[9px] font-bold uppercase leading-none">
+                                                {{ $training->published_at->format('M') }}
+                                            </span>
+                                            <span class="text-base font-bold leading-none mt-0.5">
+                                                {{ $training->published_at->format('d') }}
+                                            </span>
+                                        @else
+                                            <span class="text-[9px] font-bold uppercase leading-none">--</span>
+                                            <span class="text-base font-bold leading-none mt-0.5">--</span>
+                                        @endif
                                     </div>
 
                                     {{-- Info --}}
@@ -178,7 +183,7 @@
                                         </p>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <span class="text-xs text-neutral-500">
-                                                {{ $training->starts_at->format('H:i') }}
+                                                {{ $training->published_at ? $training->published_at->format('H:i') : 'Tarih Yok' }}
                                             </span>
                                             @if($training->is_premium_only)
                                                 <span
@@ -213,7 +218,7 @@
                                         d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                                 </svg>
                             </div>
-                            <h2 class="font-semibold text-neutral-900 text-sm">Destek Biletlerim</h2>
+                            <h2 class="font-semibold text-neutral-900 text-sm">Destek Ticket'larım</h2>
                         </div>
                         <a href="{{ route('tickets.index') }}"
                             class="text-xs font-semibold text-emerald-600 hover:text-emerald-800 transition-colors">
@@ -230,10 +235,10 @@
                                 </svg>
                             </div>
                             <p class="text-sm font-semibold text-neutral-700">Her şey yolunda!</p>
-                            <p class="text-xs text-neutral-500 mt-1">Açık biletiniz yok.</p>
+                            <p class="text-xs text-neutral-500 mt-1">Açık ticket'ınız yok.</p>
                             <a href="{{ route('tickets.create') }}"
                                 class="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-200 text-emerald-700 text-xs font-semibold hover:bg-emerald-50 transition-colors">
-                                + Yeni Bilet Oluştur
+                                + Destek Ticket'ı Oluştur
                             </a>
                         </div>
                     @else
@@ -242,8 +247,10 @@
                                 <li class="px-6 py-3.5 hover:bg-neutral-50 transition-colors">
                                     @php
                                         $badgeMap = [
-                                            'OPEN' => ['bg-emerald-100 text-emerald-700', 'Açık'],
-                                            'IN_PROGRESS' => ['bg-blue-100 text-blue-700', 'İşlemde'],
+                                            'open' => ['bg-emerald-100 text-emerald-700', 'Açık'],
+                                            'pending' => ['bg-blue-100 text-blue-700', 'Bekliyor'],
+                                            'answered' => ['bg-violet-100 text-violet-700', 'Yanıtlandı'],
+                                            'closed' => ['bg-neutral-100 text-neutral-700', 'Kapalı'],
                                         ];
                                         [$badgeCls, $badgeLabel] = $badgeMap[$ticket->status] ?? ['bg-neutral-100 text-neutral-600', $ticket->status];
                                     @endphp
@@ -256,7 +263,8 @@
                                             <p class="text-sm font-semibold text-neutral-800 truncate">{{ $ticket->subject }}
                                             </p>
                                             <p class="text-xs text-neutral-500 mt-0.5">
-                                                {{ $ticket->updated_at->diffForHumans() }}</p>
+                                                {{ $ticket->updated_at->diffForHumans() }}
+                                            </p>
                                         </div>
                                         <a href="{{ route('tickets.show', $ticket) }}"
                                             class="flex-shrink-0 text-xs font-semibold text-emerald-600 hover:text-emerald-800 mt-1 transition-colors">
@@ -269,7 +277,7 @@
                         <div class="px-6 py-3 bg-neutral-50 border-t border-neutral-100">
                             <a href="{{ route('tickets.create') }}"
                                 class="text-xs font-semibold text-emerald-600 hover:text-emerald-800 transition-colors">
-                                + Yeni Bilet Oluştur
+                                + Destek Ticket'ı Oluştur
                             </a>
                         </div>
                     @endif
@@ -306,7 +314,7 @@
                             </svg>
                         </div>
                         <span class="text-xs font-semibold text-emerald-700 text-center leading-tight">Destek
-                            Talebi</span>
+                            Ticket'ı</span>
                     </a>
 
                     {{-- Jobs --}}

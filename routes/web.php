@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
     Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
     Route::post('/tickets/{ticket}/reply', [TicketController::class, 'reply'])->name('tickets.reply');
+    Route::patch('/tickets/{ticket}/close', [TicketController::class, 'close'])->name('tickets.close');
 });
 
 // İş İlanları – herkese açık ilan listesi; alert auth gerektiriyor
@@ -62,8 +63,8 @@ Route::prefix('cms')->middleware(['auth', \App\Http\Middleware\EnsureCmsAccess::
 
     // Courses
     Route::get('courses/trashed', [AdminCourseController::class, 'trashed'])->name('courses.trashed');
-    Route::post('courses/{id}/restore', [AdminCourseController::class, 'restore'])->name('courses.restore');
     Route::post('courses/bulk', [AdminCourseController::class, 'bulk'])->name('courses.bulk');
+    Route::post('courses/{id}/restore', [AdminCourseController::class, 'restore'])->name('courses.restore');
     Route::resource('courses', AdminCourseController::class);
 
     // Lessons (nested under course)
