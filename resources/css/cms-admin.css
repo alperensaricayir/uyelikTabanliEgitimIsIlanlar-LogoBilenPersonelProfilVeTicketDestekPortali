@@ -1,0 +1,241 @@
+/*
+ * ============================================================
+ * EduPortal CMS – Accessibility & Readability Overrides
+ * Scoped to .cms-layout so public site is unaffected.
+ * Target: WCAG AA (4.5:1 for normal text, 3:1 for large/bold)
+ * ============================================================
+ */
+
+/* ── Base ──────────────────────────────────────────────────── */
+.cms-layout {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #1e293b;
+    /* slate-800 */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ────────────────────────────────────────────────────────────
+   TOP NAVBAR
+   ────────────────────────────────────────────────────────── */
+.cms-layout header {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* "Admin User" name: was text-gray-500 (4:1) → slate-700 (8.5:1) */
+.cms-layout .cms-username {
+    color: #334155;
+    /* slate-700 */
+    font-weight: 600;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SIDEBAR (dark bg slate-900)
+   ────────────────────────────────────────────────────────── */
+
+/* Section labels: were text-slate-500 (~3.3:1 on slate-900 bg) */
+.cms-layout nav .cms-nav-section-label {
+    color: #b8c7d9 !important;
+    /* between slate-300–400 → 5.8:1 on slate-900 */
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+}
+
+/* Ensure sidebar nav always has dark bg (guard against Tailwind purge) */
+.cms-layout nav {
+    background-color: #0f172a !important;
+    /* slate-900 */
+    color: #f1f5f9 !important;
+    /* slate-100 */
+}
+
+/* All nav links – ensure strong contrast on dark sidebar */
+.cms-layout nav a {
+    color: #e2e8f0 !important;
+    /* slate-200 → 10.6:1 on slate-900 */
+    font-weight: 500;
+}
+
+/* Active nav link */
+.cms-layout nav a.bg-indigo-600 {
+    background-color: #4f46e5 !important;
+    /* indigo-600 */
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+.cms-layout nav a.bg-red-700 {
+    background-color: #b91c1c !important;
+    /* red-700 */
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+/* Non-active hover */
+.cms-layout nav a:not(.bg-indigo-600):not(.bg-red-700):hover {
+    color: #ffffff !important;
+    background-color: #1e293b !important;
+    /* slate-800 */
+}
+
+/* Sidebar bottom border and user section */
+.cms-layout nav .border-slate-700 {
+    border-color: #334155 !important;
+    /* slate-700 */
+}
+
+/* ────────────────────────────────────────────────────────────
+   MAIN CONTENT AREA – Global upgrades
+   These selectors upgrade Tailwind utility classes that are
+   known to fail WCAG AA at the sizes used in this admin.
+   Using the generated class names avoids changing every blade.
+   ────────────────────────────────────────────────────────── */
+
+/* text-gray-400 on white/light bg → gray-600 (5.4:1) */
+.cms-layout main .text-gray-400:not(.text-indigo-400):not(.bg-indigo-400) {
+    color: #4b5563 !important;
+    /* gray-600 */
+}
+
+/* text-gray-500 on white/light bg → gray-700 (7.2:1) */
+.cms-layout main .text-gray-500 {
+    color: #374151 !important;
+    /* gray-700 */
+}
+
+/* text-gray-600 on white/light bg → gray-800 (11.9:1) for body-level text */
+/* (Only for content blocks, not badges/tags which have their own bg) */
+.cms-layout main td.text-gray-500,
+.cms-layout main td.text-gray-600 {
+    color: #1f2937 !important;
+    /* gray-800 */
+}
+
+/* Back-arrow / icon buttons: text-gray-400 → gray-600 */
+.cms-layout main a.text-gray-400,
+.cms-layout main button.text-gray-400 {
+    color: #4b5563 !important;
+    /* gray-600 */
+}
+
+.cms-layout main a.text-gray-400:hover,
+.cms-layout main button.text-gray-400:hover {
+    color: #111827 !important;
+    /* gray-900 */
+}
+
+/* Subtitle breadcrumbs (course title shown below page title) */
+.cms-layout main p.text-gray-400,
+.cms-layout main p.text-sm.text-gray-400 {
+    color: #374151 !important;
+    /* gray-700 */
+}
+
+/* Filter section labels */
+.cms-layout main label.text-gray-600,
+.cms-layout main label.text-xs {
+    color: #1f2937 !important;
+    /* gray-800 */
+    font-weight: 600;
+}
+
+/* ────────────────────────────────────────────────────────────
+   TABLE
+   ────────────────────────────────────────────────────────── */
+
+.cms-layout table thead th {
+    font-size: 0.8125rem;
+    /* 13px (up from ~10-11px text-xs) */
+    font-weight: 700;
+    color: #1e293b;
+    /* slate-800 – 14.5:1 */
+    letter-spacing: 0.025em;
+    background-color: #f8fafc;
+    /* slate-50 */
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.cms-layout table tbody tr:hover {
+    background-color: #f1f5f9;
+    /* slate-100, more distinct than gray-50 */
+}
+
+/* Secondary text in cells (slug, date) */
+.cms-layout table p.text-xs.text-gray-400,
+.cms-layout table span.text-xs.text-gray-400 {
+    color: #475569 !important;
+    /* slate-600 – 6.4:1 */
+}
+
+.cms-layout table td.text-gray-500 {
+    color: #1f2937 !important;
+    /* gray-800 */
+}
+
+/* ────────────────────────────────────────────────────────────
+   EMPTY STATES
+   ────────────────────────────────────────────────────────── */
+.cms-layout div.text-gray-400 p {
+    color: #374151 !important;
+    /* gray-700 */
+    font-weight: 500;
+}
+
+/* ────────────────────────────────────────────────────────────
+   FORM / INPUTS
+   ────────────────────────────────────────────────────────── */
+.cms-layout input::placeholder,
+.cms-layout textarea::placeholder {
+    color: #6b7280;
+    /* gray-500 – 4.7:1 */
+}
+
+/* Hint / helper text below inputs */
+.cms-layout p.text-xs.text-gray-400 {
+    color: #6b7280 !important;
+    /* gray-500 */
+}
+
+/* Slug label hint */
+.cms-layout span.text-gray-400.text-xs {
+    color: #6b7280 !important;
+}
+
+/* ────────────────────────────────────────────────────────────
+   TAB NAVIGATION
+   ────────────────────────────────────────────────────────── */
+.cms-layout [class*="border-transparent"][class*="text-gray-500"] {
+    color: #374151 !important;
+    /* gray-700 */
+    font-weight: 500;
+}
+
+/* ────────────────────────────────────────────────────────────
+   FLASH MESSAGES
+   ────────────────────────────────────────────────────────── */
+.cms-layout .cms-flash-success {
+    color: #14532d;
+    /* green-900 – 8.9:1 on green-50 */
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* ────────────────────────────────────────────────────────────
+   REVISION LOG
+   ────────────────────────────────────────────────────────── */
+.cms-layout .border-l-2 p.text-gray-400 {
+    color: #475569 !important;
+    /* slate-600 */
+}
+
+/* ────────────────────────────────────────────────────────────
+   CARD HEADINGS ("Bilgiler", "Son Revizyonlar" etc.)
+   ────────────────────────────────────────────────────────── */
+.cms-layout h3.font-semibold.text-gray-800 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #0f172a;
+    /* slate-900 */
+}
