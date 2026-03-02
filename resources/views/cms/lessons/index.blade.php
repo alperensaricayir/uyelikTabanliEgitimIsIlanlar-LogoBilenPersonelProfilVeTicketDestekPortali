@@ -48,17 +48,17 @@
                             @php $lc = $lesson->status->color() @endphp
                             <span
                                 class="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0
-                                        {{ $lc === 'green' ? 'bg-green-100 text-green-700' : ($lc === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
+                                                    {{ $lc === 'green' ? 'bg-green-100 text-green-700' : ($lc === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
                                 {{ $lesson->status->label() }}
                             </span>
                             @if($lesson->is_preview)
                                 <span class="text-xs text-blue-500 flex-shrink-0">👁 Önizleme</span>
                             @endif
                             <div class="flex gap-1 flex-shrink-0">
-                                <a href="{{ route('lessons.edit', $lesson) }}"
+                                <a href="{{ route('cms.lessons.edit', $lesson) }}"
                                     class="px-2 py-1 text-xs text-indigo-600 bg-indigo-50 rounded hover:bg-indigo-100">Düzenle</a>
                                 @can('delete', $lesson)
-                                    <form method="POST" action="{{ route('lessons.destroy', $lesson) }}"
+                                    <form method="POST" action="{{ route('cms.lessons.destroy', $lesson) }}"
                                         onsubmit="return confirm('Bu dersi silmek istediğinizden emin misiniz?')">
                                         @csrf @method('DELETE')
                                         <button class="px-2 py-1 text-xs text-red-600 bg-red-50 rounded hover:bg-red-100">Sil</button>

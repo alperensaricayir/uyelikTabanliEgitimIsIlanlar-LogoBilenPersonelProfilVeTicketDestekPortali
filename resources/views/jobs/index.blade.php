@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">İş İlanları</h2>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">İş İlanları</h2>
     </x-slot>
 
     <div class="py-12">
@@ -8,8 +8,8 @@
 
             {{-- İş Uyarısı --}}
             @auth
-                <div class="bg-white shadow rounded-lg p-6 mb-8">
-                    <h3 class="font-semibold text-gray-700 mb-3">🔔 İş Uyarısı Kur</h3>
+                <div class="bg-white dark:bg-gray-900 border dark:border-gray-800 shadow rounded-lg p-6 mb-8">
+                    <h3 class="font-semibold text-gray-700 dark:text-gray-200 mb-3">🔔 İş Uyarısı Kur</h3>
                     @if(session('success'))
                         <div class="mb-3 text-green-600 text-sm">{{ session('success') }}</div>
                     @endif
@@ -28,7 +28,7 @@
                             </button>
                         </div>
                         @if($alert)
-                            <p class="text-xs text-gray-500 mt-2">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
                                 Mevcut uyarınız: <strong>{{ implode(', ', $alert->keywords) }}</strong>
                             </p>
                         @endif
@@ -39,11 +39,11 @@
             {{-- İlan Listesi --}}
             <div class="space-y-4">
                 @forelse($jobs as $job)
-                    <div class="bg-white shadow rounded-lg p-6">
+                    <div class="bg-white dark:bg-gray-900 border dark:border-gray-800 shadow rounded-lg p-6">
                         <div class="flex items-start justify-between">
                             <div>
-                                <h3 class="font-bold text-gray-800 text-lg">{{ $job->title }}</h3>
-                                <p class="text-gray-500 text-sm">{{ $job->company_name }}</p>
+                                <h3 class="font-bold text-gray-800 dark:text-gray-100 text-lg">{{ $job->title }}</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $job->company_name }}</p>
                             </div>
                             <a href="{{ route('jobs.show', $job) }}"
                                 class="text-indigo-600 hover:underline text-sm whitespace-nowrap ml-4">
@@ -53,14 +53,16 @@
                         @if($job->tags)
                             <div class="mt-3 flex flex-wrap gap-2">
                                 @foreach($job->tags as $tag)
-                                    <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">{{ $tag }}</span>
+                                    <span
+                                        class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs px-2 py-1 rounded-full">{{ $tag }}</span>
                                 @endforeach
                             </div>
                         @endif
-                        <p class="text-gray-600 text-sm mt-3 line-clamp-2">{{ Str::limit($job->description, 150) }}</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-3 line-clamp-2">
+                            {{ Str::limit($job->description, 150) }}</p>
                     </div>
                 @empty
-                    <p class="text-center text-gray-500 py-12">Şu an aktif ilan bulunmuyor.</p>
+                    <p class="text-center text-gray-500 dark:text-gray-400 py-12">Şu an aktif ilan bulunmuyor.</p>
                 @endforelse
             </div>
 

@@ -17,7 +17,7 @@
                         @php $color = $course->status->color() @endphp
                         <span
                             class="text-xs px-2 py-0.5 rounded-full font-semibold
-                            {{ $color === 'green' ? 'bg-green-100 text-green-700' : ($color === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
+                                {{ $color === 'green' ? 'bg-green-100 text-green-700' : ($color === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
                             {{ $course->status->label() }}
                         </span>
                         @if($course->is_premium_only)
@@ -49,7 +49,7 @@
                 @foreach(['overview' => 'Genel Bakış', 'lessons' => 'Dersler', 'settings' => 'Ayarlar'] as $tabKey => $tabLabel)
                     <a href="?tab={{ $tabKey }}"
                         class="px-5 py-3 text-sm font-medium border-b-2 transition-colors
-                                  {{ $tab === $tabKey ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                                          {{ $tab === $tabKey ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         {{ $tabLabel }}
                     </a>
                 @endforeach
@@ -151,7 +151,7 @@
                                         @php $lc = $lesson->status->color() @endphp
                                         <span
                                             class="text-xs px-2 py-0.5 rounded-full font-medium
-                                                    {{ $lc === 'green' ? 'bg-green-100 text-green-700' : ($lc === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
+                                                                    {{ $lc === 'green' ? 'bg-green-100 text-green-700' : ($lc === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
                                             {{ $lesson->status->label() }}
                                         </span>
                                     </td>
@@ -163,10 +163,10 @@
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 text-right">
-                                        <a href="{{ route('lessons.edit', [$lesson]) }}"
+                                        <a href="{{ route('cms.lessons.edit', [$lesson]) }}"
                                             class="text-xs text-indigo-600 hover:underline mr-2">Düzenle</a>
                                         @can('delete', $lesson)
-                                            <form method="POST" action="{{ route('lessons.destroy', [$lesson]) }}" class="inline"
+                                            <form method="POST" action="{{ route('cms.lessons.destroy', [$lesson]) }}" class="inline"
                                                 onsubmit="return confirm('Bu dersi silmek istediğinizden emin misiniz?')">
                                                 @csrf @method('DELETE')
                                                 <button class="text-xs text-red-500 hover:underline">Sil</button>

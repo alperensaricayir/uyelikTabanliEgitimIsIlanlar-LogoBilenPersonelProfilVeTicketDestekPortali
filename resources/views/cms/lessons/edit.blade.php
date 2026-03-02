@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('lessons.update', $lesson) }}" class="space-y-5">
+        <form method="POST" action="{{ route('cms.lessons.update', $lesson) }}" class="space-y-5">
             @csrf @method('PUT')
             @include('cms.lessons._form', ['lesson' => $lesson, 'course' => $course])
             <div class="flex gap-3 pt-2">
@@ -34,7 +34,8 @@
                     @foreach($revisions as $rev)
                         <div class="border-l-2 border-indigo-200 pl-3 text-xs text-gray-500">
                             <p class="font-medium">{{ $rev->created_at->format('d.m.Y H:i') }} ·
-                                {{ $rev->user?->name ?? 'Bilinmiyor' }}</p>
+                                {{ $rev->user?->name ?? 'Bilinmiyor' }}
+                            </p>
                             <p class="text-gray-400 truncate">{{ Str::limit(strip_tags($rev->value), 120) }}</p>
                         </div>
                     @endforeach

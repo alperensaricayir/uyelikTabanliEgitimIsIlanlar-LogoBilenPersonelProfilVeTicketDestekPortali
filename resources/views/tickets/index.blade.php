@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-neutral-900 leading-tight">Destek Ticket'ları</h2>
+            <h2 class="font-semibold text-xl text-neutral-900 dark:text-gray-100 leading-tight">Destek Ticket'ları</h2>
             <a href="{{ route('tickets.create') }}"
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-600 text-white text-sm font-semibold shadow-sm hover:bg-violet-700 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,7 +12,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8 bg-neutral-50 min-h-screen">
+    <div class="py-8 bg-neutral-50 dark:bg-gray-950 min-h-screen">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             @if(session('success'))
                 <div
@@ -24,7 +24,8 @@
                 </div>
             @endif
 
-            <div class="bg-white border border-neutral-200 shadow-sm rounded-2xl overflow-hidden">
+            <div
+                class="bg-white dark:bg-gray-900 border border-neutral-200 dark:border-gray-800 shadow-sm rounded-2xl overflow-hidden">
                 @if($tickets->isEmpty())
                     <div class="py-16 text-center">
                         <div class="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center mx-auto mb-4">
@@ -41,31 +42,23 @@
                         </a>
                     </div>
                 @else
-                    <ul class="divide-y divide-neutral-100">
+                    <ul class="divide-y divide-neutral-100 dark:divide-gray-800">
                         @foreach($tickets as $ticket)
                             <li
-                                class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-neutral-50 transition-colors">
+                                class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-neutral-50 dark:hover:bg-gray-800/50 transition-colors">
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center gap-3 mb-1">
                                         <a href="{{ route('tickets.show', $ticket) }}"
-                                            class="font-semibold text-neutral-900 hover:text-violet-600 transition-colors truncate text-base">
+                                            class="font-semibold text-neutral-900 dark:text-gray-100 hover:text-violet-600 dark:hover:text-violet-400 transition-colors truncate text-base">
                                             #{{ $ticket->id }} – {{ $ticket->subject }}
                                         </a>
-                                        @php
-                                            $badgeMap = [
-                                                'open' => ['bg-emerald-100 text-emerald-700', 'Açık'],
-                                                'pending' => ['bg-blue-100 text-blue-700', 'Bekliyor'],
-                                                'answered' => ['bg-violet-100 text-violet-700', 'Yanıtlandı'],
-                                                'closed' => ['bg-neutral-100 text-neutral-600', 'Kapalı'],
-                                            ];
-                                            [$badgeCls, $badgeLabel] = $badgeMap[$ticket->status] ?? ['bg-neutral-100 text-neutral-600', $ticket->status];
-                                        @endphp
                                         <span
-                                            class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {{ $badgeCls }} flex-shrink-0">
-                                            {{ $badgeLabel }}
+                                            class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {{ $ticket->statusBadgeClass() }} flex-shrink-0">
+                                            {{ $ticket->statusLabel() }}
                                         </span>
                                     </div>
-                                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500">
+                                    <div
+                                        class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500 dark:text-gray-400">
                                         <span class="flex items-center gap-1">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,13 +77,13 @@
                                             </span>
                                         @endif
                                         @if(auth()->user()->isAgent())
-                                            <span class="font-medium text-neutral-700">Oluşturan:
+                                            <span class="font-medium text-neutral-700 dark:text-gray-300">Oluşturan:
                                                 {{ $ticket->user->name ?? '—' }}</span>
                                         @endif
                                     </div>
                                 </div>
                                 <a href="{{ route('tickets.show', $ticket) }}"
-                                    class="flex-shrink-0 inline-flex items-center justify-center px-4 py-2 border border-neutral-200 rounded-xl text-sm font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors">
+                                    class="flex-shrink-0 inline-flex items-center justify-center px-4 py-2 border border-neutral-200 dark:border-gray-700 rounded-xl text-sm font-semibold text-neutral-700 dark:text-gray-300 hover:bg-neutral-100 dark:hover:bg-gray-800 hover:text-neutral-900 dark:hover:text-white transition-colors">
                                     Görüntüle
                                 </a>
                             </li>

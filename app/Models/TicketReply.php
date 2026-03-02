@@ -38,9 +38,13 @@ class TicketReply extends Model
             $ticket = $reply->ticket;
             $user = $reply->user;
 
-            $status = 'open'; // default if user replies
-            if ($user && ($user->isAdmin() || $user->isEditor() || $user->isAgent())) {
-                $status = 'answered';
+            $status = $ticket->status;
+            if ($status !== 'closed') {
+                if ($user && ($user->isAdmin() || $user->isEditor() || $user->isAgent())) {
+                    $status = 'answered';
+                }
+                // Normal kullanici yaniti atildiginda 'answered' kalmasi isteniyor, 
+                // kapatilmadigi surece yanitlandi veya acik kalir.
             }
 
             $ticket->update([

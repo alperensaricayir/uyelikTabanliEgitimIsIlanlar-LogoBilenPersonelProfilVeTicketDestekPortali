@@ -16,7 +16,7 @@ class LessonController extends Controller
     public function index(Training $course)
     {
         $this->authorize('viewAny', Lesson::class);
-        $lessons = $course->lessons()->withTrashed(false)->get();
+        $lessons = $course->lessons()->get();
 
         return view('cms.lessons.index', compact('course', 'lessons'));
     }
@@ -49,17 +49,20 @@ class LessonController extends Controller
             ->with('success', 'Ders oluşturuldu.');
     }
 
-    public function edit(Training $course, Lesson $lesson)
+    public function edit(Lesson $lesson)
     {
         $this->authorize('update', $lesson);
-        $revisions = $lesson->revisions()->where('field', 'content')->take(5)->get();
+        $course = $lesson->training;
+        $revisions = $lesson->revisions()->with('user')->where('field', 'content')->take(5)->get();
 
         return view('cms.lessons.edit', compact('course', 'lesson', 'revisions'));
     }
 
-    public function update(LessonRequest $request, Training $course, Lesson $lesson)
+    public function update(LessonRequest $request, Lesson $lesson)
     {
         $this->authorize('update', $lesson);
+
+        $course = $lesson->training;
 
         $data = $request->validated();
         $data['slug'] = $data['slug'] ?: Str::slug($data['title']);
@@ -80,7 +83,7 @@ class LessonController extends Controller
             ->with('success', 'Ders güncellendi.');
     }
 
-    public function destroy(Training $course, Lesson $lesson)
+    public function destroy(Lesson $lesson)
     {
         $this->authorize('delete', $lesson);
         $lesson->delete();

@@ -30,7 +30,9 @@ class JobController extends Controller
     /** Uyarı (alert) oluştur ya da güncelle. */
     public function storeAlert(Request $request)
     {
-        $this->middleware('auth');
+        // Clean empty keywords before validation
+        $keywords = array_values(array_filter($request->keywords ?? [], fn($v) => filled($v)));
+        $request->merge(['keywords' => $keywords]);
 
         $request->validate([
             'keywords' => 'required|array|min:1',

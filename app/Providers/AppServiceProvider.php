@@ -23,5 +23,9 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(Training::class, TrainingPolicy::class);
         Gate::policy(Lesson::class, LessonPolicy::class);
+
+        Gate::define('manage-users', function ($user) {
+            return $user->isAdmin();
+        });
     }
 }

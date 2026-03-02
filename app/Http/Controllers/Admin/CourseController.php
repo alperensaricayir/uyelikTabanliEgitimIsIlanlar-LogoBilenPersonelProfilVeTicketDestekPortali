@@ -65,7 +65,7 @@ class CourseController extends Controller
 
         $tab = $request->tab ?? 'overview';
         $lessons = $course->lessons()->get();
-        $revisions = $course->revisions()->where('field', 'description')->take(5)->get();
+        $revisions = $course->revisions()->with('user')->where('field', 'description')->take(5)->get();
 
         return view('cms.courses.show', compact('course', 'tab', 'lessons', 'revisions'));
     }

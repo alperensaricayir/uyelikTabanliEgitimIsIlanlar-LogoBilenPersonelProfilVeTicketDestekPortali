@@ -15,9 +15,13 @@ class TicketController extends Controller
     {
         $user = auth()->user();
 
+        $otherReplyQuery = function ($q) {
+            $q->whereColumn('ticket_replies.user_id', '!=', 'tickets.user_id');
+        };
+
         $tickets = $user->isAgent()
-            ? Ticket::with(['user', 'lastReplyBy'])->recent()->paginate(15)
-            : $user->tickets()->recent()->paginate(15);
+            ? Ticket::with(['user', 'lastReplyBy'])->withCount(['replies as other_reply_count' => $otherReplyQuery])->recent()->paginate(15)
+            : $user->tickets()->withCount(['replies as other_reply_count' => $otherReplyQuery])->recent()->paginate(15);
 
         return view('tickets.index', compact('tickets'));
     }

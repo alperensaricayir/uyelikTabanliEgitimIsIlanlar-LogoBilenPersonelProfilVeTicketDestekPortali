@@ -61,4 +61,39 @@ class Ticket extends Model
     {
         return $query->where('user_id', $userId);
     }
+
+    // --- Status Helpers ---
+
+    public function getComputedStatusAttribute(): string
+    {
+        if ($this->status === 'closed') {
+            return 'closed';
+        }
+
+        if ($this->last_reply_by) {
+            return $this->last_reply_by === $this->user_id ? 'open' : 'answered';
+        }
+
+        return 'open';
+    }
+
+    public function statusLabel(): string
+    {
+        $status = $this->computed_status;
+        if ($status === 'closed')
+            return 'Kapalı';
+        if ($status === 'answered')
+            return 'Yanıtlandı';
+        return 'Açık';
+    }
+
+    public function statusBadgeClass(): string
+    {
+        $status = $this->computed_status;
+        if ($status === 'closed')
+            return 'bg-neutral-100 text-neutral-600';
+        if ($status === 'answered')
+            return 'bg-violet-100 text-violet-700';
+        return 'bg-emerald-100 text-emerald-700';
+    }
 }

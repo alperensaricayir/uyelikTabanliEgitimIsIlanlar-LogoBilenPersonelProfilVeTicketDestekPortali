@@ -21,6 +21,7 @@ class User extends Authenticatable
         'social_links',
         'featured_links',
         'likes_count',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -34,6 +35,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_premium' => 'boolean',
+            'is_active' => 'boolean',
             'social_links' => 'array',
             'featured_links' => 'array',
         ];

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 // Ana sayfa
 Route::get('/', function () {
-    return view('welcome');
+    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
 })->name('home');
 
 // Dashboard
@@ -72,6 +72,16 @@ Route::prefix('cms')->middleware(['auth', \App\Http\Middleware\EnsureCmsAccess::
     Route::post('courses/{course}/lessons/{id}/restore', [AdminLessonController::class, 'restore'])->name('courses.lessons.restore');
     Route::post('courses/{course}/lessons/reorder', [AdminLessonController::class, 'reorder'])->name('courses.lessons.reorder');
     Route::resource('courses.lessons', AdminLessonController::class)->shallow();
+
+    // Users
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
+    Route::patch('users/{user}/toggle-active', [\App\Http\Controllers\Admin\UserController::class, 'toggleActive'])->name('users.toggleActive');
+    Route::patch('users/{user}/toggle-admin', [\App\Http\Controllers\Admin\UserController::class, 'toggleAdmin'])->name('users.toggleAdmin');
+
+    // Tickets
+    Route::resource('tickets', \App\Http\Controllers\Admin\TicketController::class)->only(['index', 'show', 'destroy']);
+    Route::post('tickets/{ticket}/reply', [\App\Http\Controllers\Admin\TicketController::class, 'reply'])->name('tickets.reply');
+    Route::patch('tickets/{ticket}/close', [\App\Http\Controllers\Admin\TicketController::class, 'close'])->name('tickets.close');
 });
 
 require __DIR__ . '/auth.php';

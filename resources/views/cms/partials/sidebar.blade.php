@@ -1,8 +1,8 @@
 <nav class="w-64 bg-slate-900 text-white flex flex-col flex-shrink-0 min-h-screen">
     <div class="px-6 py-5 border-b border-slate-700">
         <a href="{{ route('cms.courses.index') }}" class="flex items-center gap-2">
-            <span class="text-xl font-bold text-indigo-400">📚</span>
-            <span class="font-bold text-lg text-white tracking-tight">EduPortal CMS</span>
+            <img src="{{ asset('images/3s-logo.png') }}" class="h-8 w-auto hover:opacity-80 transition-opacity"
+                alt="3S Grup Logo">
         </a>
     </div>
 
@@ -19,6 +19,30 @@
             </svg>
             Kurslar
         </a>
+
+        @can('manage-users')
+            <a href="{{ route('cms.users.index') }}" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                              {{ request()->routeIs('cms.users.*')
+            ? 'bg-indigo-600 text-white cms-nav-active'
+            : 'text-slate-200 hover:bg-slate-800 hover:text-white' }}">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                Kullanıcılar
+            </a>
+
+            <a href="{{ route('cms.tickets.index') }}" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                              {{ request()->routeIs('cms.tickets.*')
+            ? 'bg-indigo-600 text-white cms-nav-active'
+            : 'text-slate-200 hover:bg-slate-800 hover:text-white' }}">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                Destek Ticket'ları
+            </a>
+        @endcan
 
         <a href="{{ route('cms.courses.trashed') }}" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
                   {{ request()->routeIs('cms.courses.trashed')
