@@ -26,12 +26,19 @@ class Training extends Model
         'status',
         'thumbnail',
         'updated_by',
+        'hero_video_url',
+        'hero_poster_path',
+        'price',
+        'promo_features',
+        'purchase_button_text',
     ];
 
     protected $casts = [
         'is_premium_only' => 'boolean',
         'published_at' => 'datetime',
         'status' => ContentStatus::class,
+        'promo_features' => 'array',
+        'price' => 'decimal:2',
     ];
 
     // ── Boot ────────────────────────────────────────────────
@@ -89,6 +96,16 @@ class Training extends Model
             ->orderByDesc('created_at');
     }
 
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function enrolledUsers()
+    {
+        return $this->belongsToMany(User::class, 'enrollments');
+    }
+
     // ── Helpers ─────────────────────────────────────────────
     public function isPublished(): bool
     {
@@ -98,5 +115,10 @@ class Training extends Model
     public function thumbnailUrl(): ?string
     {
         return $this->thumbnail ? asset('storage/' . $this->thumbnail) : null;
+    }
+
+    public function hasUserEnrolled(User $user): bool
+    {
+        return $this->enrollments()->where('user_id', $user->id)->exists();
     }
 }

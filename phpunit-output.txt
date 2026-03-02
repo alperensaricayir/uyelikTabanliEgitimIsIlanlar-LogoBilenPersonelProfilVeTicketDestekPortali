@@ -1,0 +1,20 @@
+PHPUnit 11.5.55 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.3
+Configuration: D:\Downloads\ai-form-application-assistant-v2-main\egitimportal\portal-core\phpunit.xml
+
+E                                                                   1 / 1 (100%)
+
+Time: 00:00.560, Memory: 50.00 MB
+
+There was 1 error:
+
+1) Tests\Feature\AdminTicketReplyTest::test_admin_can_reply_to_ticket_with_body_mapped_to_message
+Error: Class "Database\Factories\TicketFactory" not found
+
+D:\Downloads\ai-form-application-assistant-v2-main\egitimportal\portal-core\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:993
+D:\Downloads\ai-form-application-assistant-v2-main\egitimportal\portal-core\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\HasFactory.php:21
+D:\Downloads\ai-form-application-assistant-v2-main\egitimportal\portal-core\tests\Feature\AdminTicketReplyTest.php:19
+
+ERRORS!
+Tests: 1, Assertions: 0, Errors: 1.

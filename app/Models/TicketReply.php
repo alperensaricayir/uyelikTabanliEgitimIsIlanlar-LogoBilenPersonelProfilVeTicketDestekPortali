@@ -17,6 +17,11 @@ class TicketReply extends Model
         'message',
     ];
 
+    public function getBodyAttribute()
+    {
+        return $this->message;
+    }
+
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);

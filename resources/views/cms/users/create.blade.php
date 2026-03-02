@@ -86,6 +86,22 @@
                         </div>
                     </div>
                     @error('is_active')
+                        <p class="mt-1 text-sm text-rose-600 mb-4">{{ $message }}</p>
+                    @enderror
+
+                    <div class="flex items-start mt-4">
+                        <div class="flex items-center h-5">
+                            <input id="is_premium" name="is_premium" type="checkbox" value="1" {{ old('is_premium', false) ? 'checked' : '' }}
+                                class="focus:ring-amber-500 h-4 w-4 text-amber-600 border-slate-300 rounded">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="is_premium" class="font-medium text-slate-700 flex items-center gap-1">⭐ Premium
+                                Üye</label>
+                            <p class="text-slate-500">Kullanıcıya özel eğitim içeriklerine sınırsız erişim yetkisi verir.
+                            </p>
+                        </div>
+                    </div>
+                    @error('is_premium')
                         <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
                     @enderror
                 </div>

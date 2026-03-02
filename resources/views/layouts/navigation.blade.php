@@ -1,13 +1,16 @@
-<nav x-data="{ open: false, showSearch: false }"
+<nav x-data="{ open: false, showSearch: false, premiumModalOpen: false }"
+    @open-premium-modal.window="premiumModalOpen = true"
     class="bg-white dark:bg-gray-900 border-b border-neutral-200 dark:border-gray-700 sticky top-0 z-50 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 gap-4">
+        <div class="flex items-center justify-between h-20 md:h-24 gap-4">
 
             {{-- Left: Logo + Brand --}}
-            <div class="flex-shrink-0 flex items-center gap-2">
+            <div class="flex-shrink-0 flex items-center gap-2 pl-4 py-2">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-2 group">
-                    <img src="{{ asset('images/3s-logo.png') }}" class="h-8 w-auto hover:opacity-80 transition-opacity"
-                        alt="3S Grup Logo">
+                    <img src="{{ asset('images/3sgruplogoyeni.png') }}"
+                        class="h-9 md:h-10 lg:h-12 w-auto object-contain hover:opacity-80 transition-opacity drop-shadow-sm dark:drop-shadow-md"
+                        alt="3S Grup Logo"
+                        onerror="this.outerHTML='<span class=\'text-xl md:text-2xl font-bold font-serif text-gray-900 dark:text-white\'>3S Grup</span>'">
                 </a>
             </div>
 
@@ -15,6 +18,7 @@
             <div class="hidden md:flex items-center gap-1 flex-1 justify-center">
                 @php
                     $navLinks = [
+                        ['route' => 'dashboard', 'label' => 'Ana Sayfa', 'icon' => '🏠'],
                         ['route' => 'trainings.index', 'label' => 'Eğitimler', 'icon' => '🎓'],
                         ['route' => 'discover.index', 'label' => 'Keşfet', 'icon' => '🔍'],
                         ['route' => 'jobs.index', 'label' => 'İş İlanları', 'icon' => '💼'],
@@ -27,7 +31,7 @@
                     @endphp
                     <a href="{{ route($link['route']) }}"
                         class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                                                  {{ $isActive ? 'bg-violet-50 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300' : 'text-neutral-600 dark:text-gray-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-gray-800' }}">
+                                                                                  {{ $isActive ? 'bg-violet-50 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300' : 'text-neutral-600 dark:text-gray-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-gray-800' }}">
                         {{ $link['label'] }}
                         @if($link['route'] === 'tickets.index' && auth()->check())
                             @php
@@ -63,12 +67,17 @@
                     </svg>
                 </a>
 
-                {{-- Premium badge --}}
+                {{-- Premium badge/button --}}
                 @if(auth()->user()->isPremium())
-                    <a href="{{ route('premium.services') }}"
-                        class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors">
+                    <button type="button" @click="premiumModalOpen = true"
+                        class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-900/70 transition-colors">
                         ⭐ Premium
-                    </a>
+                    </button>
+                @else
+                    <button type="button" @click="premiumModalOpen = true"
+                        class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-amber-100 dark:hover:bg-amber-900/50 hover:text-amber-800 dark:hover:text-amber-300 transition-colors">
+                        ⭐ Premium Ol
+                    </button>
                 @endif
 
                 {{-- Profile Dropdown --}}
@@ -188,8 +197,11 @@
                 <span class="block dark:hidden">🌙 Dark Mode</span>
                 <span class="hidden dark:block">☀️ Light Mode</span>
             </button>
+            <a href="{{ route('dashboard') }}"
+                class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-violet-50 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300' : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-100 dark:hover:bg-gray-800' }}">🏠
+                Ana Sayfa</a>
             <a href="{{ route('trainings.index') }}"
-                class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-neutral-700 hover:bg-neutral-100">🎓
+                class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('trainings.*') ? 'bg-violet-50 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300' : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-100 dark:hover:bg-gray-800' }}">🎓
                 Eğitimler</a>
             <a href="{{ route('discover.index') }}"
                 class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-neutral-700 hover:bg-neutral-100">🔍
@@ -214,9 +226,13 @@
                 class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-neutral-700 hover:bg-neutral-100">👤
                 Profilim</a>
             @if(auth()->user()->isPremium())
-                <a href="{{ route('premium.services') }}"
-                    class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-amber-700 hover:bg-amber-50">⭐
-                    Premium</a>
+                <button type="button" @click="premiumModalOpen = true"
+                    class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 text-left">⭐
+                    Premium</button>
+            @else
+                <button type="button" @click="premiumModalOpen = true"
+                    class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-neutral-700 dark:text-gray-300 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:text-amber-700 dark:hover:text-amber-400 text-left">⭐
+                    Premium Ol</button>
             @endif
             <div class="border-t border-neutral-100 pt-2">
                 <form method="POST" action="{{ route('logout') }}">
@@ -226,6 +242,48 @@
                         Çıkış Yap
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Premium Modal --}}
+    <div x-show="premiumModalOpen"
+        class="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/50 dark:bg-gray-900/80 backdrop-blur-sm"
+        style="display: none;" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0">
+
+        <div @click.outside="premiumModalOpen = false"
+            class="relative w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 m-4"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+
+            <div class="text-center mb-6">
+                <div
+                    class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/50 mb-4">
+                    <span class="text-2xl">⭐</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Premium Üyelik</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Premium üyelik için alperen.saricayir@3sgrup.com.tr ile iletişime geçebilir veya destek ticketı
+                    oluşturabilirsiniz.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <a href="{{ route('tickets.create') }}"
+                    class="w-full flex justify-center items-center py-2.5 px-4 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-colors">
+                    Destek Ticketı Oluştur
+                </a>
+                <button type="button" @click="premiumModalOpen = false"
+                    class="w-full flex justify-center items-center py-2.5 px-4 rounded-lg font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    Kapat
+                </button>
             </div>
         </div>
     </div>

@@ -27,7 +27,12 @@ class TrainingController extends Controller
             abort(404);
         }
 
-        $canViewGated = auth()->check() && auth()->user()->can('viewGatedContent', $training);
+        // Gated content viewable if they are enrolled, or if they are admin/editor.
+        $canViewGated = false;
+        if (auth()->check()) {
+            $user = auth()->user();
+            $canViewGated = $user->isAdminOrEditor() || $training->hasUserEnrolled($user);
+        }
 
         // Show published lessons + preview lessons visible without enrollment
         $lessons = $training->lessons()

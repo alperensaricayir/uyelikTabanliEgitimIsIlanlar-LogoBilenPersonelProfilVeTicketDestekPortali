@@ -51,7 +51,7 @@ class TicketController extends Controller
 
         $reply = $ticket->replies()->create([
             'user_id' => auth()->id(),
-            'body' => $request->body,
+            'message' => $request->body,
         ]);
 
         if ($request->hasFile('images')) {

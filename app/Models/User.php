@@ -22,6 +22,22 @@ class User extends Authenticatable
         'featured_links',
         'likes_count',
         'is_active',
+        // Advanced Profile
+        'profile_photo_path',
+        'headline',
+        'city',
+        'country',
+        'bio',
+        'skills',
+        'website_url',
+        'linkedin_url',
+        'github_url',
+        'instagram_url',
+        'youtube_url',
+        'twitter_url',
+        'behance_url',
+        'dribbble_url',
+        'is_profile_public',
     ];
 
     protected $hidden = [
@@ -38,6 +54,8 @@ class User extends Authenticatable
             'is_active' => 'boolean',
             'social_links' => 'array',
             'featured_links' => 'array',
+            'skills' => 'array',
+            'is_profile_public' => 'boolean',
         ];
     }
 
@@ -108,5 +126,15 @@ class User extends Authenticatable
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function trainingsEnrolled()
+    {
+        return $this->belongsToMany(Training::class, 'enrollments');
     }
 }

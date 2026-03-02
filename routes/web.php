@@ -20,14 +20,21 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 // Profil
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Public Profil
+Route::get('/u/{user}', [ProfileController::class, 'publicShow'])->name('profile.public');
+
 // Eğitimler – herkese açık liste, detayda gated içerik policy ile kontrol edilir
 Route::get('/trainings', [TrainingController::class, 'index'])->name('trainings.index');
 Route::get('/trainings/{training:slug}', [TrainingController::class, 'show'])->name('trainings.show');
+
+// Eğitim Kayıt (Enrollment)
+Route::middleware('auth')->post('/trainings/{training}/enroll', [\App\Http\Controllers\Web\TrainingEnrollmentController::class, 'store'])->name('trainings.enroll');
 
 // Destek Biletleri – auth zorunlu
 Route::middleware('auth')->group(function () {
@@ -47,11 +54,7 @@ Route::middleware('auth')->post('/jobs/alerts', [JobController::class, 'storeAle
 // Discover – auth zorunlu
 Route::middleware('auth')->get('/discover', [DiscoverController::class, 'index'])->name('discover.index');
 
-// Premium Üyelere Özel Sayfa
-Route::middleware(['auth', \App\Http\Middleware\EnsureUserIsPremium::class])
-    ->get('/premium-services', function () {
-        return view('premium.services');
-    })->name('premium.services');
+// Premium features explicitly disabled to prevent self-subscribing.
 
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;

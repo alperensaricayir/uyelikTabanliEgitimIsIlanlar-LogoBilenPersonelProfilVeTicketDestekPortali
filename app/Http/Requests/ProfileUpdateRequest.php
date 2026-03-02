@@ -25,6 +25,21 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'headline' => ['nullable', 'string', 'max:120'],
+            'city' => ['nullable', 'string', 'max:80'],
+            'country' => ['nullable', 'string', 'max:80'],
+            'bio' => ['nullable', 'string', 'max:2000'],
+            'skills' => ['nullable', 'string'],
+            'website_url' => ['nullable', 'url', 'max:2048'],
+            'linkedin_url' => ['nullable', 'url', 'max:2048'],
+            'github_url' => ['nullable', 'url', 'max:2048'],
+            'instagram_url' => ['nullable', 'url', 'max:2048'],
+            'youtube_url' => ['nullable', 'url', 'max:2048'],
+            'twitter_url' => ['nullable', 'url', 'max:2048'],
+            'behance_url' => ['nullable', 'url', 'max:2048'],
+            'dribbble_url' => ['nullable', 'url', 'max:2048'],
+            'is_profile_public' => ['nullable', 'boolean'],
         ];
     }
 }

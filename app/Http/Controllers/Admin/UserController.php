@@ -56,10 +56,12 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
             'role' => ['required', Rule::in(['admin', 'agent', 'member'])],
             'is_active' => 'boolean',
+            'is_premium' => 'boolean',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
         $validated['is_active'] = $request->has('is_active');
+        $validated['is_premium'] = $request->has('is_premium');
 
         User::create($validated);
 
@@ -83,6 +85,7 @@ class UserController extends Controller
             'password' => 'nullable|string|min:8',
             'role' => ['required', Rule::in(['admin', 'agent', 'member'])],
             'is_active' => 'boolean',
+            'is_premium' => 'boolean',
         ]);
 
         if (!empty($validated['password'])) {
@@ -92,6 +95,7 @@ class UserController extends Controller
         }
 
         $validated['is_active'] = $request->has('is_active');
+        $validated['is_premium'] = $request->has('is_premium');
 
         $user->update($validated);
 

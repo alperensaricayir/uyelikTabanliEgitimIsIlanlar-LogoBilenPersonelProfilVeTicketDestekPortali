@@ -97,6 +97,7 @@
                         </th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">Durum</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">Dersler</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Kayıtlı</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">Erişim</th>
                         <th class="px-4 py-3 text-left font-semibold text-gray-600">
                             <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'dir' => request('dir') === 'asc' ? 'desc' : 'asc']) }}"
@@ -138,12 +139,15 @@
                                 @php $color = $course->status->color() @endphp
                                 <span
                                     class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold
-                                                    {{ $color === 'green' ? 'bg-green-100 text-green-700' : ($color === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
+                                                            {{ $color === 'green' ? 'bg-green-100 text-green-700' : ($color === 'yellow' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600') }}">
                                     {{ $course->status->label() }}
                                 </span>
                             </td>
                             <td class="px-4 py-3 text-gray-600">
                                 {{ $course->lessons()->count() }} ders
+                            </td>
+                            <td class="px-4 py-3 text-gray-600 font-medium font-bold text-indigo-600">
+                                {{ $course->enrolledUsers()->count() }}
                             </td>
                             <td class="px-4 py-3">
                                 @if($course->is_premium_only)

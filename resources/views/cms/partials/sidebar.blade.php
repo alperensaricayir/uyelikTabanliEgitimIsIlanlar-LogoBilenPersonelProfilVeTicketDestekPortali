@@ -1,8 +1,10 @@
 <nav class="w-64 bg-slate-900 text-white flex flex-col flex-shrink-0 min-h-screen">
-    <div class="px-6 py-5 border-b border-slate-700">
+    <div class="px-6 py-6 border-b border-slate-700">
         <a href="{{ route('cms.courses.index') }}" class="flex items-center gap-2">
-            <img src="{{ asset('images/3s-logo.png') }}" class="h-8 w-auto hover:opacity-80 transition-opacity"
-                alt="3S Grup Logo">
+            <img src="{{ asset('images/3sgruplogoyeni.png') }}"
+                class="h-16 sm:h-20 w-auto hover:opacity-80 transition-opacity drop-shadow-sm scale-[1.5] origin-left"
+                alt="3S Grup Logo"
+                onerror="this.outerHTML='<span class=\'text-2xl font-bold font-serif text-white\'>3S Grup</span>'">
         </a>
     </div>
 
@@ -22,7 +24,7 @@
 
         @can('manage-users')
             <a href="{{ route('cms.users.index') }}" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                              {{ request()->routeIs('cms.users.*')
+                                              {{ request()->routeIs('cms.users.*')
             ? 'bg-indigo-600 text-white cms-nav-active'
             : 'text-slate-200 hover:bg-slate-800 hover:text-white' }}">
                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +35,7 @@
             </a>
 
             <a href="{{ route('cms.tickets.index') }}" class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                              {{ request()->routeIs('cms.tickets.*')
+                                              {{ request()->routeIs('cms.tickets.*')
             ? 'bg-indigo-600 text-white cms-nav-active'
             : 'text-slate-200 hover:bg-slate-800 hover:text-white' }}">
                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
