@@ -1,59 +1,76 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 3S Grup Personel, Profil ve Destek Portalı
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Bu proje, şirket içi personellerin, yöneticilerin ve dış kullanıcıların bir araya geldiği; eğitimlerin, iş ilanlarının, ürünlerin ve destek biletlerinin (ticket) yönetildiği kapsamlı bir **Laravel 11** uygulamasıdır. İçerik ve sistem yönetimi, güçlü ve özelleştirilebilir **Filament PHP** admin paneli üzerinden sağlanmaktadır.
 
-## About Laravel
+## 🌟 Temel Özellikler
+- **Gelişmiş Kullanıcı Profilleri:** Kullanıcıların kendilerine ait yeteneklerini (skills), sosyal medya bağlantılarını, biyografilerini ve iletişim bilgilerini ekleyebilecekleri herkese açık veya gizli yapılabilen profil sayfaları.
+- **Keşfet (Discover):** Sistemdeki diğer kullanıcıları yeteneklerine veya puanlarına göre filtreleyip inceleyebileceğiniz ve tek tıkla **Beğenebileceğiniz (Like)** liderlik tablosu ağı.
+- **Eğitim Yönetimi (LMS):** Personel gelişimleri için oluşturulan, yalnızca yetkisi veya kaydı (enrollment) olan kullanıcıların görebileceği, dersler (lessons) ve videolar içeren eğitim modülü.
+- **İş İlanları & İş Alarmları:** Sistem üzerinden başvuru URL'si verilebilen, zengin metin düzenleyiciyle yazılmış detaylı iş ilanları ve kullanıcıların belirli kelimelerle kendilerine iş uyarısı (Job Alert) kurabilmesi.
+- **Ürünler (Products):** Ücretsiz olarak incelenebilecek veya link ile satın alıma yönlendirilebilecek ürün/hizmet sergileme modülü.
+- **Destek Bilet Sistemi (Ticketing):** Departmanlara (Kategori), önceliklere veya sistem yöneticilerine göre atanabilen, yöneticilerle müşterilerin karşılıklı mesajlaşabileceği gelişmiş Ticket sistemi.
+- **Filament Admin Paneli:** Tüm bu verilerin (Kullanıcılar, Biletler, İlanlar, Ürünler vb.) saniyeler içinde kolayca, yetkilendirmelere (Role-base) bağlı şekilde yönetilebildiği arka plan paneli.
+- **Karanlık Mod (Dark Mode):** Uygulamanın tüm sayfaları, TailwindCSS ile entegre bir şekilde kusursuz karanlık mod deneyimi sunar.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠 Kullanılan Teknolojiler
+- **Backend:** Laravel 11.x, PHP 8.2+
+- **Frontend:** Blade, TailwindCSS, Alpine.js
+- **Veritabanı:** SQLite (Varsayılan olarak - MySQL/PostgreSQL uyumlu)
+- **Admin Paneli:** Filament v3
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Kurulum ve Çalıştırma
 
-## Learning Laravel
+Bu projeyi yerel bilgisayarınızda veya sunucunuzda çalıştırmak oldukça basittir. Projenin devasa boyutlara ulaşmaması için `vendor` ve `node_modules` klasörleri GitHub'a yüklenmemiştir; bu nedenle projeyi indirdikten sonra inşa edilmesi (build) gerekir.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Bunu yapmak için **iki farklı yöntem** bulunmaktadır:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Yöntem 1: Tek Tıkla Kurulum (Windows İçin Önerilen)
+Eğer Windows kullanıyorsanız ve hiçbir terminal koduyla uğraşmak istemiyorsanız:
+1. Projeyi bilgisayarınıza indirin (ZIP veya Clone).
+2. Proje ana klasörünün içindeki **`kurulum.bat`** dosyasına çift tıklayın.
+3. Siyah ekran (CMD) açılacak ve gerekli olan tüm kütüphaneleri indirecek, ayar dosyanızı (`.env`) oluşturacak, veritabanını hazırlayacak ve resim linklerini otomatik yapacaktır. Sadece bitmesini bekleyin.
 
-## Laravel Sponsors
+### Yöntem 2: Manuel Kurulum (Linux/Mac/Geliştiriciler)
+Terminal üzerinden kendiniz kurmak isterseniz proje dizininde şu komutları sırasıyla çalıştırın:
+```bash
+# Gerekli PHP paketlerini yükleyin
+composer install
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Gerekli Frontend (JS/CSS) paketlerini yükleyin
+npm install
 
-### Premium Partners
+# .env (ayar) dosyasını oluşturun
+cp .env.example .env
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# Uygulamanın güvenlik anahtarını (App Key) oluşturun
+php artisan key:generate
 
-## Contributing
+# Veritabanı tablolarını içeri aktarın
+php artisan migrate --force
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Yüklenen fotoğrafların görünmesi için köprü oluşturun
+php artisan storage:link
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 💻 Projeyi Yayına Alma (Başlatma)
+Kurulum (otomatik veya manuel) bittikten sonra projeyi çalıştırmak için **iki ayrı terminal (CMD veya VS Code Terminali)** açmalı ve proje dizinindeyken şu iki komutu ayrı ayrı girmelisiniz:
 
-## Security Vulnerabilities
+**1. Terminalde (Frontend için):**
+```bash
+npm run dev
+```
+**2. Terminalde (Backend Sunucusu için):**
+```bash
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Bu işlemin ardından tarayıcınızdan `http://localhost:8000` (veya serve'in verdiği portta) adresine giderek sistemi kullanmaya başlayabilirsiniz. Sistemdeki verileri yönetmek için adresin sonuna `/admin` (veya belirlediğiniz Filament yolu) yazarak panele ulaşabilirsiniz.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Geliştirici
+Geliştirildi ve tasarlandı. Herhangi bir sorunda `kurulum.bat` dosyası ile kurulumu her zaman sıfırlayabilirsiniz.
