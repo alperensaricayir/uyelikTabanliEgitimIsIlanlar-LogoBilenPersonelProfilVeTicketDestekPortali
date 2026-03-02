@@ -25,6 +25,7 @@ class DiscoverController extends Controller
                 AS discover_score
             ")
             ->where('role', 'member')
+            ->where('is_profile_public', true)
             ->orderByDesc('discover_score')
             ->paginate(15);
 

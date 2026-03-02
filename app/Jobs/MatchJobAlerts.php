@@ -17,7 +17,7 @@ class MatchJobAlerts implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(public readonly JobPosting $job)
+    public function __construct(public readonly JobPosting $jobPosting)
     {
     }
 
@@ -32,8 +32,8 @@ class MatchJobAlerts implements ShouldQueue
             ->chunkById(100, function (\Illuminate\Support\Collection $alerts) {
                 /** @var \App\Models\JobAlert $alert */
                 foreach ($alerts as $alert) {
-                    if ($alert->matchesJob($this->job)) {
-                        $alert->user->notify(new JobMatchNotification($this->job));
+                    if ($alert->matchesJob($this->jobPosting)) {
+                        $alert->user->notify(new JobMatchNotification($this->jobPosting));
                     }
                 }
             });

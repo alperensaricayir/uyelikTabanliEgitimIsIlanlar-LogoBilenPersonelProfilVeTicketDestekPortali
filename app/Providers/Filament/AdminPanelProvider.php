@@ -54,13 +54,13 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->authorizationMiddleware([])
-            ->auth()
             ->authGuard('web');
     }
 
     public function register(): void
     {
+        parent::register();
+
         // Filament paneline sadece admin ve support agent rolündekiler girebilir.
         \Illuminate\Support\Facades\Gate::define('access-filament', function (\App\Models\User $user) {
             return $user->isAgent(); // isAgent(): role === 'agent' || 'admin'

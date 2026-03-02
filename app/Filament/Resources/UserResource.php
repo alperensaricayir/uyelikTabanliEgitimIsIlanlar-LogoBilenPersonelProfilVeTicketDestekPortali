@@ -31,8 +31,16 @@ class UserResource extends Resource
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required(),
-                Forms\Components\TextInput::make('role')
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $context): bool => $context === 'create'),
+                Forms\Components\Select::make('role')
+                    ->options([
+                        'member' => 'Üye (Member)',
+                        'agent' => 'Temsilci (Agent)',
+                        'editor' => 'Editör (Editor)',
+                        'admin' => 'Yönetici (Admin)',
+                    ])
+                    ->default('member')
                     ->required(),
                 Forms\Components\Toggle::make('is_premium')
                     ->required(),

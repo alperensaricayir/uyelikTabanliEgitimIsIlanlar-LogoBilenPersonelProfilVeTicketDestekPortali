@@ -14,6 +14,8 @@ class JobPosting extends Model
         'title',
         'company_name',
         'description',
+        'content',
+        'application_url',
         'tags',
         'is_active',
     ];

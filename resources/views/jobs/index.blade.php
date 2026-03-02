@@ -51,15 +51,21 @@
                             </a>
                         </div>
                         @if($job->tags)
-                            <div class="mt-3 flex flex-wrap gap-2">
-                                @foreach($job->tags as $tag)
-                                    <span
-                                        class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs px-2 py-1 rounded-full">{{ $tag }}</span>
-                                @endforeach
-                            </div>
+                            @php
+                                $tags = is_string($job->tags) ? [$job->tags] : (is_array($job->tags) ? $job->tags : []);
+                            @endphp
+                            @if(count($tags) > 0)
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    @foreach($tags as $tag)
+                                        <span
+                                            class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs px-2 py-1 rounded-full">{{ $tag }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
                         @endif
                         <p class="text-gray-600 dark:text-gray-400 text-sm mt-3 line-clamp-2">
-                            {{ Str::limit($job->description, 150) }}</p>
+                            {{ Str::limit($job->description, 150) }}
+                        </p>
                     </div>
                 @empty
                     <p class="text-center text-gray-500 dark:text-gray-400 py-12">Şu an aktif ilan bulunmuyor.</p>

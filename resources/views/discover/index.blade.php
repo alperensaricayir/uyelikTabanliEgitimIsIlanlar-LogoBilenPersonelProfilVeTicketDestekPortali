@@ -11,13 +11,13 @@
 
             <div class="space-y-4">
                 @forelse($members as $index => $member)
-                    <div
-                        class="bg-white dark:bg-gray-900 border dark:border-gray-800 shadow rounded-lg p-5 flex items-center justify-between">
+                    <a href="{{ route('profile.public', $member) }}"
+                        class="bg-white dark:bg-gray-900 border hover:border-indigo-400 dark:border-gray-800 dark:hover:border-indigo-500 transition-colors shadow rounded-lg p-5 flex items-center justify-between hover:shadow-md cursor-pointer group">
                         <div class="flex items-center gap-4">
                             {{-- Sıralama numarası --}}
                             <div
                                 class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm
-                                        {{ $index === 0 ? 'bg-yellow-400 text-white' : ($index === 1 ? 'bg-gray-300 text-gray-700' : ($index === 2 ? 'bg-amber-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400')) }}">
+                                            {{ $index === 0 ? 'bg-yellow-400 text-white' : ($index === 1 ? 'bg-gray-300 text-gray-700' : ($index === 2 ? 'bg-amber-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400')) }}">
                                 {{ $members->firstItem() + $index }}
                             </div>
                             <div>
@@ -46,13 +46,14 @@
 
                             {{-- Like Butonu --}}
                             @auth
-                                <button onclick="likeUser({{ $member->id }}, this)"
-                                    class="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 transition">
+                                <button
+                                    onclick="event.preventDefault(); event.stopPropagation(); likeUser({{ $member->id }}, this)"
+                                    class="relative z-10 flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 transition">
                                     ❤ <span>{{ $member->likes_count }}</span>
                                 </button>
                             @endauth
                         </div>
-                    </div>
+                    </a>
                 @empty
                     <p class="text-center text-gray-400 dark:text-gray-500 py-12">Henüz üye bulunmuyor.</p>
                 @endforelse

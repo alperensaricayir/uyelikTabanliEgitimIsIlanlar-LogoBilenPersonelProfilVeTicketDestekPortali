@@ -24,10 +24,10 @@
 
                 {{-- Premium upgrade CTA --}}
                 @if(!auth()->user()->isPremium())
-                    <a href="{{ route('premium.services') }}"
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-semibold shadow-sm hover:shadow-md hover:from-amber-600 hover:to-orange-600 transition-all">
+                    <button type="button" onclick="window.dispatchEvent(new CustomEvent('open-premium-modal'))"
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-semibold shadow-sm hover:shadow-md hover:from-amber-600 hover:to-orange-600 transition-all cursor-pointer">
                         ⭐ Premium'a Geç
-                    </a>
+                    </button>
                 @else
                     <span
                         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-100 text-amber-800 text-sm font-semibold">
@@ -348,7 +348,7 @@
                             <svg class="w-5 h-5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                         </div>
                         <span class="text-xs font-semibold text-sky-700 dark:text-sky-400 text-center leading-tight">İş
@@ -370,6 +370,21 @@
                             class="text-xs font-semibold text-amber-700 dark:text-amber-400 text-center leading-tight">Profilim</span>
                     </a>
 
+                    {{-- Premium --}}
+                    @if(auth()->user()->isPremium())
+                        <button type="button" onclick="window.dispatchEvent(new CustomEvent('open-premium-modal'))"
+                            class="group flex flex-col items-center gap-2 py-5 px-3 rounded-xl bg-gradient-to-br from-amber-50 dark:from-amber-900/20 to-orange-50 dark:to-orange-900/20 hover:from-amber-100 dark:hover:from-amber-900/40 hover:to-orange-100 dark:hover:to-orange-900/40 border border-amber-100 dark:border-amber-800 transition-all cursor-pointer">
+                            <div
+                                class="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-semibold text-amber-700 dark:text-amber-500 text-center leading-tight">Premium</span>
+                        </button>
+                    @endif
                     {{-- Discover --}}
                     <a href="{{ route('discover.index') }}"
                         class="group flex flex-col items-center gap-2 py-5 px-3 rounded-xl bg-fuchsia-50 dark:bg-fuchsia-900/10 hover:bg-fuchsia-100 dark:hover:bg-fuchsia-900/30 border border-fuchsia-100 dark:border-fuchsia-800/50 hover:border-fuchsia-200 dark:hover:border-fuchsia-700 transition-all duration-150">

@@ -32,10 +32,11 @@ class ProfileController extends Controller
         // If the profile is not public, only the owner can see it.
         if (!$user->is_profile_public) {
             if (Auth::check() && Auth::id() === $user->id) {
-                // Let the owner see it, but flag that it differs from what others see
+                // Let the owner see it as a preview of what others WOULD see if it was public
                 return view('profile.show', [
                     'user' => $user,
-                    'isOwner' => true,
+                    'isOwner' => false,
+                    'isPreview' => true,
                 ]);
             }
             abort(404);
@@ -43,8 +44,42 @@ class ProfileController extends Controller
 
         return view('profile.show', [
             'user' => $user,
-            'isOwner' => Auth::check() && Auth::id() === $user->id,
+            'isOwner' => false,
         ]);
+    }
+
+    /**
+     * Toggle like status for a user profile.
+     */
+    public function toggleLike(User $user): RedirectResponse
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (Auth::id() === $user->id) {
+            return back()->with('error', 'Kendi profilinizi beğenemezsiniz.');
+        }
+
+        $existingLike = \App\Models\Like::where('user_id', Auth::id())
+            ->where('likeable_type', User::class)
+            ->where('likeable_id', $user->id)
+            ->first();
+
+        if ($existingLike) {
+            $existingLike->delete();
+            $user->decrement('likes_count');
+            return back()->with('success', 'Beğeni geri alındı.');
+        }
+
+        \App\Models\Like::create([
+            'user_id' => Auth::id(),
+            'likeable_type' => User::class,
+            'likeable_id' => $user->id,
+        ]);
+
+        $user->increment('likes_count');
+        return back()->with('success', 'Profil beğenildi!');
     }
     /**
      * Display the user's profile form.

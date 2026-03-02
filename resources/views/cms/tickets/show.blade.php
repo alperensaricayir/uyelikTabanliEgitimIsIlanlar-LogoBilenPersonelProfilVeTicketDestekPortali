@@ -101,7 +101,8 @@
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-slate-700 mb-1">Ek Dosyalar (Opsiyonel)</label>
                             <input type="file" name="images[]" multiple accept="image/jpeg,image/png,image/webp,image/jpg"
-                                class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors cursor-pointer border border-slate-200 rounded-md">
+                                class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors cursor-pointer border border-slate-200 rounded-md"
+                                onchange="for(let i=0; i<this.files.length; i++){ if(this.files[i].size > 5 * 1024 * 1024){ alert('Dosya boyutu 5MB limitini aşıyor: ' + this.files[i].name); this.value = ''; break; } }">
                             @error('images.*')
                                 <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                             @enderror

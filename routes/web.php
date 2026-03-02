@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Web\TrainingController;
-use App\Http\Controllers\Web\TicketController;
-use App\Http\Controllers\Web\JobController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DiscoverController;
+use App\Http\Controllers\Web\JobController;
+use App\Http\Controllers\Web\LessonController;
+use App\Http\Controllers\Web\ProductController;
+use App\Http\Controllers\Web\TicketController;
+use App\Http\Controllers\Web\TrainingController;
+use App\Http\Controllers\Web\TrainingEnrollmentController;
 use Illuminate\Support\Facades\Route;
 
 // Ana sayfa
@@ -24,17 +27,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/u/{user}/like', [ProfileController::class, 'toggleLike'])->name('profile.like');
 });
 
-// Public Profil
+// Public Profil ve Ürünler
 Route::get('/u/{user}', [ProfileController::class, 'publicShow'])->name('profile.public');
+Route::get('/urunlerimiz', [ProductController::class, 'index'])->name('products.index');
 
 // Eğitimler – herkese açık liste, detayda gated içerik policy ile kontrol edilir
 Route::get('/trainings', [TrainingController::class, 'index'])->name('trainings.index');
 Route::get('/trainings/{training:slug}', [TrainingController::class, 'show'])->name('trainings.show');
-
-// Eğitim Kayıt (Enrollment)
-Route::middleware('auth')->post('/trainings/{training}/enroll', [\App\Http\Controllers\Web\TrainingEnrollmentController::class, 'store'])->name('trainings.enroll');
+Route::post('/trainings/{training:slug}/enroll', [TrainingEnrollmentController::class, 'store'])->name('trainings.enroll'); // Modified/Moved this line
+Route::get('/trainings/{training:slug}/lessons/{lesson:slug}', [LessonController::class, 'show'])->name('trainings.lessons.show'); // Added this line
 
 // Destek Biletleri – auth zorunlu
 Route::middleware('auth')->group(function () {

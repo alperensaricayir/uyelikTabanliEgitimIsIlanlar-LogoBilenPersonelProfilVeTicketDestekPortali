@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\JobPostingResource\Pages;
-use App\Filament\Resources\JobPostingResource\RelationManagers;
-use App\Models\JobPosting;
+use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class JobPostingResource extends Resource
+class ProductResource extends Resource
 {
-    protected static ?string $model = JobPosting::class;
+    protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -24,23 +24,31 @@ class JobPostingResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->required(),
-                Forms\Components\TextInput::make('company_name')
-                    ->required(),
-                Forms\Components\TextInput::make('application_url')
-                    ->label('Başvuru URL')
-                    ->url()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('description')
-                    ->label('Kısa Açıklama')
+                    ->label('Ürün Başlığı')
                     ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('price')
+                    ->numeric()
+                    ->label('Fiyat')
+                    ->prefix('₺')
+                    ->helperText('Ücretsiz ise boş bırakın veya 0 yazın.'),
+                Forms\Components\TextInput::make('url')
+                    ->url()
+                    ->label('Yönlendirme Linki (URL)')
+                    ->maxLength(2048)
+                    ->helperText('Örn: https://alperensaricayir.com.tr')
                     ->columnSpanFull(),
-                Forms\Components\RichEditor::make('content')
-                    ->label('Detaylı İlan İçeriği')
+                Forms\Components\FileUpload::make('image_path')
+                    ->label('Ürün Görseli')
+                    ->image()
+                    ->directory('products')
                     ->columnSpanFull(),
-                Forms\Components\TagsInput::make('tags')
+                Forms\Components\RichEditor::make('description')
+                    ->label('Açıklama')
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')
+                    ->label('Aktif mi?')
+                    ->default(true)
                     ->required(),
             ]);
     }
@@ -49,11 +57,22 @@ class JobPostingResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->label('Görsel'),
                 Tables\Columns\TextColumn::make('title')
+                    ->label('Ürün Başlığı')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('company_name')
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Fiyat')
+                    ->money('try')
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => $state ? '₺' . number_format($state, 2) : 'Ücretsiz'),
+                Tables\Columns\TextColumn::make('url')
+                    ->label('URL')
+                    ->limit(30)
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Durum')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -87,9 +106,9 @@ class JobPostingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListJobPostings::route('/'),
-            'create' => Pages\CreateJobPosting::route('/create'),
-            'edit' => Pages\EditJobPosting::route('/{record}/edit'),
+            'index' => Pages\ListProducts::route('/'),
+            'create' => Pages\CreateProduct::route('/create'),
+            'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }

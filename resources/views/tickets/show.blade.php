@@ -104,7 +104,8 @@
                                     5MB)</label>
                                 <input type="file" name="images[]" multiple
                                     accept="image/jpeg,image/png,image/webp,image/jpg"
-                                    class="block w-full text-sm text-neutral-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 dark:file:bg-violet-900/30 dark:file:text-violet-400 hover:file:bg-violet-100 transition-colors cursor-pointer border border-neutral-200 dark:border-gray-700 rounded-lg">
+                                    class="block w-full text-sm text-neutral-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 dark:file:bg-violet-900/30 dark:file:text-violet-400 hover:file:bg-violet-100 transition-colors cursor-pointer border border-neutral-200 dark:border-gray-700 rounded-lg"
+                                    onchange="for(let i=0; i<this.files.length; i++){ if(this.files[i].size > 5 * 1024 * 1024){ alert('Dosya boyutu 5MB limitini aşıyor: ' + this.files[i].name); this.value = ''; break; } }">
                                 @error('images.*')
                                     <p class="text-rose-500 text-xs mt-1.5 font-medium">{{ $message }}</p>
                                 @enderror

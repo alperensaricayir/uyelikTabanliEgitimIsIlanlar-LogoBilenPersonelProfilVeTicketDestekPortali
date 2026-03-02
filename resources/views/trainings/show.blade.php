@@ -129,9 +129,9 @@
                                 @endphp
                                 
                                 @if($isLocked)
-                                    <div class="flex items-center gap-4 p-4 sm:p-5 opacity-75 bg-neutral-50/30 dark:bg-gray-900/30">
+                                    <div class="group flex items-center justify-between p-4 cursor-not-allowed bg-gray-50 dark:bg-gray-800/50 opacity-75">
                                 @else
-                                    <a href="#" onclick="alert('Ders izleme modülü yakında aktif edilecektir.'); return false;" class="flex items-center gap-4 p-4 sm:p-5 hover:bg-neutral-50 dark:hover:bg-gray-800/50 transition cursor-pointer group">
+                                    <a href="{{ route('trainings.lessons.show', [$training, $lesson]) }}" class="group flex items-center justify-between p-4 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-colors">
                                 @endif
                                     
                                     {{-- Lesson Number Badge --}}
@@ -208,7 +208,11 @@
                                     Kayıtlısın
                                 </button>
                                 @if($lessons->count() > 0)
-                                    <a href="#" onclick="alert('Ders izleme modülü yakında aktif edilecektir.'); return false;" class="w-full flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 dark:border-emerald-500 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 font-bold py-3 px-6 rounded-xl transition-all mb-4">
+                                    @php
+                                        // Find first available lesson to redirect to
+                                        $firstAvailable = $lessons->first();
+                                    @endphp
+                                    <a href="{{ route('trainings.lessons.show', [$training, $firstAvailable]) }}" class="w-full flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 dark:border-emerald-500 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 font-bold py-3 px-6 rounded-xl transition-all mb-4">
                                         Eğitime Git / Derslere Başla
                                     </a>
                                 @endif

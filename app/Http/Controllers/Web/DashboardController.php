@@ -30,8 +30,7 @@ class DashboardController extends Controller
             ->whereNull('read_at')
             ->count();
 
-        $profile = $user->profile; // assumes relation
-        $profileCompleteness = $this->calculateProfileCompleteness($profile);
+        $profileCompleteness = $this->calculateProfileCompleteness($user);
 
         // Lists for sections
         $upcomingTrainings = Training::where('starts_at', '>=', Carbon::now())
@@ -56,22 +55,55 @@ class DashboardController extends Controller
         ));
     }
 
-    private function calculateProfileCompleteness($profile)
+    private function calculateProfileCompleteness($user)
     {
-        if (!$profile)
-            return 0;
         $fields = [
-            $profile->full_name,
-            $profile->title,
-            $profile->bio,
-            $profile->location,
+            $user->name,
+            $user->email,
+            $user->headline,
+            $user->bio,
+            $user->city,
+            $user->country,
+            $user->profile_photo_path,
         ];
-        $filled = collect($fields)->filter()->count();
+
+        $filled = collect($fields)->filter(fn($field) => !empty($field))->count();
         $total = count($fields);
-        $socialLinksCount = $profile->socialLinks()->count();
+
+        // Add points for having at least one skill
         $total++;
-        $filled += $socialLinksCount > 0 ? 1 : 0;
-        return round(($filled / $total) * 100);
+        if (!empty($user->skills) && count($user->skills) > 0) {
+            $filled++;
+        }
+
+        // Add points for having at least one social link
+        $total++;
+        if (!empty($user->social_links) && count((array) $user->social_links) > 0) {
+            $filled++;
+        }
+
+        // Also check specific URLs
+        $urls = [
+            $user->website_url,
+            $user->linkedin_url,
+            $user->github_url,
+        ];
+
+        $filledUrls = collect($urls)->filter(fn($url) => !empty($url))->count();
+        if ($filledUrls > 0) {
+            // Give 1 point if any url is filled, but don't penalize too much if not all are filled
+            // Actually, let's just count them as a single group point to make it easier to reach 100%
+            $total++;
+            $filled++;
+        } else {
+            $total++; // Not filled, so denominator increases
+        }
+
+        // Added +1 total and +1 filled if they verified email (bonus point essentially)
+        // Or we just calculate percentage from filled/total
+        $percentage = round(($filled / $total) * 100);
+
+        return $percentage;
     }
 }
 ?>
